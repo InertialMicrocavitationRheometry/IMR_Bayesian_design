@@ -2,16 +2,16 @@ function [x,E2,P_post,params]= main_En4D_peaks_par(Model_params,t,yth,R0_all,Req
 
 % parallel En4D_Var Ensemble Kalman filter for IMR solve
 
-% based on Sakov 2011 paper
-% Author: Jean-Sebastien Spratt (jspratt@caltech.edu)
-
+% based on Sakov 2011 paper and Spratt et al. 2021 paper
+% Original author: Jean-Sebastien Spratt (jspratt@caltech.edu)
+% Edited by: Tianyi Chu (tchu72@gatech.edu)
 
 
 %% 
 
 q = 48;  % Number of ensemble members
-
 exp_i = 1;
+
 
 %% Data assimilation parameters
 
@@ -33,9 +33,9 @@ mu_theta=P_prior.mu; sigma_theta = P_prior.sigma;
 theta_params = mvnrnd(mu_theta,sigma_theta,q);
 
 
-G_prior = theta_params(:,1) ;
-mu_prior = theta_params(:,2)  ;
-alpha_prior = theta_params(:,3);
+G_prior      =    theta_params(:,1) ;
+mu_prior     =    theta_params(:,2)  ;
+alpha_prior  =    theta_params(:,3);
 
 G_guess      =    mean(G_prior);
 mu_guess     =    mean(mu_prior);
@@ -126,10 +126,7 @@ est_params = [];
 
 %rng(99)
 tic
-%% Clean up
-%close all
-%clear all
-% clc
+
 
 %% Initialize and import data
 
@@ -166,20 +163,8 @@ Req = Req_all(exp_i);
 
 create_ensemble_exp_new;
 
-
-% t0_all(exp_i) = t0;
-
-
-
 tspan_star = max(tspan);
 
-
-% if min(xi(2*NT+NTM+10,:))<=0
-% 
-%     Idx = (xi(2*NT+NTM+10,:))<=0;
-% 
-%     xi(2*NT+NTM+10,Idx) = xi(2*NT+NTM+10,Idx)-min(xi(2*NT+NTM+10,:))+1e-10;
-% end
 
 x(:,:,1) = xi;
 
@@ -289,53 +274,8 @@ for j = 1:j_max
             params(:,2,idx) = mu_all;
             params(:,3,idx) = alpha_all;
 
-            % pd_G = fitdist(G_all','Normal')
-            % pd_mu = fitdist(mu_all','Normal')
-            % pd_alpha = fitdist(alpha_all','Normal')
-
-            % 
-            % subplot(3,1,1);
-            % 
-            % plot(idx*ones(q,1),G_all/1000,'r.'); hold on;
-            % 
-            %  plot(idx,15,'go')
-            % % 
-            % % ylim([0 25])
-            % 
-            % ylabel('G_{\infty}')
-            % 
-            % subplot(3,1,2);
-            % 
-            % plot(idx*ones(q,1),mu_all,'b.'); hold on;
-            % 
-            %  plot(idx,0.25,'mo')
-            % 
-            % % ylim([0 0.35])
-            % 
-            %  ylabel('G_{\mu}')
-            % 
-            % subplot(3,1,3);
-            % 
-            % plot(idx*ones(q,1),alpha_all,'b.'); hold on;
-            % 
-            % plot(idx,0.0,'mo')
-            % 
-            % % ylim([0 1])
-            % 
-            %              ylabel('\alpha')
-            % 
-            % 
-            % drawnow;
-            % 
-             idx = idx+1;
-
-
-        % disp(['exp_i = ' num2str(exp_i) ', iteration = ' num2str(jj)])
-
-
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        %E1(3,:) = max(E1(3,:),0.001); % Limit P to physical values
 
         TTinv = linsolve(TT,eye(size(TT)));
 
@@ -344,12 +284,9 @@ for j = 1:j_max
         t1 = t(exp_i,time_index);
         t2 = t(exp_i,time_index+l);
 
-        % sim_q = parallel.pool.DataQueue;
-        % afterEach(sim_q, @disp);
 
         parfor memb = 1:q
 
-             % send(sim_q,memb);
 
             [t_memb{memb}, EE{memb},~] = f_new(t1,t2,E1(:,memb),vars,tau_del{memb});
 
@@ -436,9 +373,6 @@ for j = 1:j_max
     end
 
     
-    %  update the prior
-
-    % std_post = std(A1,0,2);
 
     if j<j_max
         for j1 = 1:size(A1,1)
@@ -488,7 +422,6 @@ P_post.mu = mu_post; P_post.sigma =sigma_post;
 % end
 
 c = clock;
-%save(['IEnKS_MDA_lag',num2str(l),'_q',num2str(q),'test1_',datestr(now)],'-v7.3')
 run_time = toc
 
 

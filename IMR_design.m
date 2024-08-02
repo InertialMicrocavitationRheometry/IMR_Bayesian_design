@@ -10,7 +10,7 @@ fprintf('Number of workers: %g\n', poolobj.NumWorkers);
 model_true = 'fung';
 theta_true = [2770 0.186 0.48];
 
-save_name = 'results_design_random.mat';
+save_name = 'results_design.mat';
 
 
 
@@ -61,31 +61,21 @@ while count<30
 
     %%  Bayesian optimization
 
-    N = 40;
+    N = 1000;
 
     obs = 20;
 
     xrange = [100 1000; 0.14 0.3];
 
-   % if count <4
+    if count <4
 
     [Design_opt, EIG_opt] = BayOpts_2D_IMR(Model_design,obs,xrange,N,[]);
-   % 
-   % else
-   % 
-   %  [Design_opt, EIG_opt] = BayOpts_2D_IMR(Model_design,obs,xrange,N,sigma_all);
-   % 
-   % end
 
+   else
 
-    % Design_opt = [100+900*rand(1) 0.14+0.16*rand(1)];  EIG_opt = [];
+    [Design_opt, EIG_opt] = BayOpts_2D_IMR(Model_design,obs,xrange,N,sigma_all);
 
-    
-       % Design_opt = [890.9 0.2887];
-
-
-       Design_opt = [350 0.15];
-
+   end
 
    disp(['Design #' num2str(count) ', Optimal design at We = ' num2str(round(Design_opt(1)),'%i') ', Req = ' num2str(Design_opt(2),'%.2f')])
 

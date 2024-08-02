@@ -42,6 +42,10 @@ disptime = 0; % 1 = display simulation time
 Dim = 0; % 1 = output variables in dimensional form
 
 
+%% Do not modify
+% visco_params = struct('G',theta(1),'G1',G1_guess,'mu',theta(2), ...
+%     'alpha',alpha_guess,'lambda_nu',lambda_nu_guess);
+
 est_params = [];
 
 
@@ -51,6 +55,8 @@ est_params = [];
 %create_ensemble;
 
 
+% R0 = 3.5e-4;
+% Req = 0.15;
 
 S = 0.056; %0.056; % JY!!! % 0.056; % (N/m) Liquid Surface Tension
 P_inf = 101325; % (Pa) Atmospheric Pressure
@@ -148,6 +154,26 @@ parfor memb = 1:q
     %mu = mu_guess;
 
     %% Determine initial state vector based on parameters
+
+
+    % This script determines initial X0 and x0
+    %{
+global tspan R0 NT NTM Pext_type Pext_Amp_Freq Tgrad Cgrad model G G1 ...
+    mu t0 neoHook nhzen sls linkv k chi fom foh We Br A_star B_star ...
+    Rv_star Ra_star L L_heat_star Km_star P_inf T_inf C_star De deltaY ...
+    yk deltaYm xk yk2 Pv REq D_Matrix_T_C DD_Matrix_T_C ...
+    D_Matrix_Tm DD_Matrix_Tm x0_true N
+    %}
+    %***************************************
+    % Extract viscoelastic parameters from stuct
+
+    % G = visco_params.G;
+    % G1 = visco_params.G1;
+    % mu = visco_params.mu;
+    % alpha = visco_params.alpha;
+    % lambda_nu = visco_params.lambda_nu;
+
+
 
     % Load Parameters :
     Pmt = IMRcall_parameters(R0,G,G1,mu); % Calls parameters script
