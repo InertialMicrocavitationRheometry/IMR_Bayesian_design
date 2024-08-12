@@ -1,6 +1,4 @@
-addpath('functions/BOED')
-addpath('functions/DA')
-addpath('functions/IMR simulation')
+
 
 %% Set up parallel enviroment
 

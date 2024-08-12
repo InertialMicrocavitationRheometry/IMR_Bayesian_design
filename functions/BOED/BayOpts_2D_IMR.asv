@@ -20,7 +20,9 @@ clc;
 [Xfine,Yfine]    =  meshgrid(linspace(xrange(1,1),xrange(1,2)),...
     linspace(xrange(2,1),xrange(2,2)));
 xyfine           =  [Xfine(:), Yfine(:)];
-XEI_all          =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
+
+
+XEI_all          =  zeros(obs+1,size(Xfine,1), size(Xfine,2));
 sd_all           =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
 y_pred_all       =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
 
@@ -79,22 +81,32 @@ for j = 0:obs
 
     % ardmatern52 kernel was recommended in https://arxiv.org/pdf/1206.2944.pdf
 
-    xyfine              =  [Xfine(:), Yfine(:)];
-    [y_pred,sd]         =  predict(mdl,xyfine);
-    y_pred_all(j+1,:,:) =  reshape(y_pred,size(Xfine));
+    xyfine = [Xfine(:), Yfine(:)];
+    [y_pred,sd] = predict(mdl,xyfine);
+
+    y_pred_all(j+1,:,:) = reshape(y_pred,size(Xfine));
 
 
     %% Expected Improvement
+    % This EI is from http://krasserm.github.io/2018/03/21/bayesian-optimization/
 
-    xi               =  0.01;  % Exploration-exploitation parameter (High xi = more exploration, Low xi = more exploitation)
-    d                =  y_pred - max(y_true) - xi; 
-    EI               =  (sd ~= 0).*(d.*normcdf(d./sd) + sd.*normpdf(d./sd));
-    [~,posEI]        =  max(EI); 
-    xEI              =  xyfine(posEI,:);
-    x(end+1,:)       =  xEI;               
-    [y_true(end+1)]  =  f(x(end,:));   
-    XEI_all(j+1,:,:) =  reshape(EI,size(Xfine));
-    sd_all(j+1,:,:)  =  reshape(sd,size(Xfine));
+    xi = 0.01;  % Exploration-exploitation parameter (greek letter, xi)
+    % High xi = more exploration
+    % Low xi = more exploitation (can be < 0)
+
+    d = y_pred - max(y_true) - xi; 
+
+    EI = (sd ~= 0).*(d.*normcdf(d./sd) + sd.*normpdf(d./sd));
+
+    [eimax,posEI] = max(EI); 
+    xEI = xyfine(posEI,:);
+    x(end+1,:) = xEI;               
+
+    [y_true(end+1)]  = f(x(end,:));   
+
+
+    XEI_all(j+1,:,:) = reshape(EI,size(Xfine));
+    sd_all(j+1,:,:)  = reshape(sd,size(Xfine));
 
 
 
