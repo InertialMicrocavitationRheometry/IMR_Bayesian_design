@@ -37,7 +37,7 @@ if load_data
     
     %  load data from exisiting evaluations
 
-    load(save_name)
+    load(save_name);
 
     x = data{1};
     y_true = data{2};

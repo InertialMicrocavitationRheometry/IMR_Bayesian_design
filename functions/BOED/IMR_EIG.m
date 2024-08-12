@@ -18,23 +18,18 @@ N_model = size(Model_all,1);
 Y = [];
 
 for j = 1:N_model
-
     
-    Model_j = Model_all{j};
+    % Input model setups
 
-
-    model = Model_j{1};
-
-    P_prior = Model_j{3};
-
-    model_prob = Model_j{4};
+    Model_j      =  Model_all{j};
+    model        =  Model_j{1};
+    P_prior      =  Model_j{3};
+    model_prob   =  Model_j{4};
+    mu_theta     =  P_prior.mu; 
+    sigma_theta  =  P_prior.sigma;
+    theta_params =  mvnrnd(mu_theta,sigma_theta,round(N*model_prob));
 
     disp([model ' model with ' num2str(round(100*model_prob),'%.2f') '% probability']);
-
-    mu_theta=P_prior.mu; sigma_theta = P_prior.sigma;
-
-
-    theta_params = mvnrnd(mu_theta,sigma_theta,round(N*model_prob));
     
     if model_prob>1e-2
 
@@ -86,10 +81,8 @@ end
 %%  Evalute the EIG
 
 
-[mu_NMC_j,~,] = NMC_est(Y, [], diag(sigma_w(1:61).^2 ),'data');
-
-
-mu_NMC = mean(mu_NMC_j);
+[mu_NMC_j,~,] =  NMC_est(Y, [], diag(sigma_w(1:61).^2 ),'data');
+mu_NMC        =  mean(mu_NMC_j);
 
 
 

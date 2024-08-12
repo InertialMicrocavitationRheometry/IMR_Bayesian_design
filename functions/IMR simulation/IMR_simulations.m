@@ -15,11 +15,9 @@ tic
 %% Initialize and import data
 
 
-q = size(theta_params,1);
-
-
-G1 = 1e9;
-lambda_nu = .1;
+q         =  size(theta_params,1);
+G1        =  1e9;                
+lambda_nu =  .1;
 
 
 %% Modeling parameters
@@ -47,55 +45,40 @@ est_params = [];
 
 %%
 
-% Create Initial Ensemble
-%create_ensemble;
+
+S          =  0.056; %0.056; % JY!!! % 0.056; % (N/m) Liquid Surface Tension
+P_inf      =  101325; % (Pa) Atmospheric Pressure
+rho        =  1060; % (Kg/m^3) Liquid Density
+R0         =  Design(1)/P_inf*(2*S);
+Req        =  Design(2);
 
 
-
-S = 0.056; %0.056; % JY!!! % 0.056; % (N/m) Liquid Surface Tension
-P_inf = 101325; % (Pa) Atmospheric Pressure
-rho = 1060; % (Kg/m^3) Liquid Density
-R0    = Design(1)/P_inf*(2*S);
-Req   = Design(2);
-
-tspan_star = 4;
-
-vars    = cell(q,1);
-
-tau_del = cell(q,1);
+opts.POSDEF=  true;
+opts.SYM   =  true;
+l          =  time_window; % size of data assimilation window
+time_index =  1;
 
 
 % Pre-allocating memory:
-n = 80;
 
-t = linspace(0,tspan_star,n+1);
-
-
-opts.POSDEF = true;
-opts.SYM = true;
-
-
-l = time_window; % size of data assimilation window
-time_index = 1;
-
-Uc = sqrt(P_inf/rho);
-t0 = R0/Uc;
-
-t1 = t(time_index);
-t2 = t(time_index+l);
-
-
-t_exp = t(time_index+(0:l));
-
-dt = (t(2)-t(1));
-
+n          =  80;
+tspan_star =  4;
+t          =  linspace(0,tspan_star,n+1);
+Uc         =  sqrt(P_inf/rho);
+t0         =  R0/Uc;
+t1         =  t(time_index);
+t2         =  t(time_index+l);
+t_exp      =  t(time_index+(0:l));
+dt         =  (t(2)-t(1));
+vars       =  cell(q,1);
+tau_del    =  cell(q,1);
 
 
 
 parfor memb = 1:q
 
-    G = theta_params(memb,1); 
-    mu = theta_params(memb,2);  
+    G     = theta_params(memb,1); 
+    mu    = theta_params(memb,2);  
     alpha = theta_params(memb,3);
 
     if mu<=0
@@ -303,7 +286,6 @@ end
 
 
 c = clock;
-%save(['IEnKS_MDA_lag',num2str(l),'_q',num2str(q),'test1_',datestr(now)],'-v7.3')
 run_time = toc
 
 
@@ -313,18 +295,13 @@ if nargin >4 && ~isempty(varargin{1})
 
     add_noise = true;
     sigma_w   = varargin{1};
-    
     if strcmp(varargin{1},'auto')
-    
-      sigma_w = 0.02*abs(mean(y2,1)-1) + linspace(0,0.025,81);
-
-    else 
-
-    sigma_w = interp1(linspace(0,4,81),sqrt(sigma_w), t_exp, 'makima' );
-    
+        sigma_w = 0.02*abs(mean(y2,1)-1) + linspace(0,0.025,81);
+    else
+        sigma_w = interp1(linspace(0,4,81),sqrt(sigma_w), t_exp, 'makima' );
     end
-    q = 100;
 
+    q = 100;
     y2 =  mvnrnd(y2, diag(sigma_w.^2) ,q) ;
     U2 =  mvnrnd(y2, diag(sigma_w.^2) ,q) ;
 else
@@ -337,7 +314,6 @@ end
 if nargin >5
     save_info  = varargin{2};
     save_data = true;
-
     data_type = save_info{1}; % 'sim' or 'exp'
     data_set  = save_info{2};
     data_filepath = save_info{3};

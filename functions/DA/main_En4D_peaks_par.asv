@@ -9,8 +9,8 @@ function [x,E2,P_post,params]= main_En4D_peaks_par(Model_params,t,yth,R0_all,Req
 
 %% 
 
-q               =    48;  % Number of ensemble members
-exp_i           =    1;
+q     = 48;  % Number of ensemble members
+exp_i = 1;
 
 
 %% Data assimilation parameters
@@ -117,11 +117,13 @@ x_est      =    zeros(2*NT+NTM+11,n+1);
 E_est      =    zeros(2*NT+NTM+11,q,max_iter);
 E2         =    zeros(q,max(peak_time_idx)-1);
 
+
 tspan      =    tspan_all(exp_i);
 R0         =    R0_all(exp_i);
 Req        =    Req_all(exp_i);
 
-create_ensemble;
+
+create_ensemble_exp_new;
 
 tspan_star =    max(tspan);
 x(:,:,1)   =    xi;

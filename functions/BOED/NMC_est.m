@@ -14,33 +14,26 @@ function [mu_NMC_j,log_P_LKH] = NMC_est(F,theta,sigma_w,varargin)
 %%  
 
 %  Sample theta from the Prior distribution p(theta)
-
 %  Calculate the results from the forward model
 
 
-if nargin == 4 
-    F_type  = varargin{1};
+if nargin == 4
+    F_type   =  varargin{1};
 else
-    F_type  = 'model';
+    F_type   =  'model';
 end
 
 
 if strcmpi(F_type,'model')
-    
-    q_model = F(theta);
-    
+    q_model  =  F(theta);
 elseif strcmpi(F_type,'data')
-    
-    q_model = F;
-    
+    q_model  =  F;
 end
 
 
 [N,Nx] = size(q_model);
 
-
-
- norm_fun_log = @(mu, Sigma, x)  +(-((x-mu)/(2*Sigma))*(x-mu)' );
+norm_fun_log = @(mu, Sigma, x)  +(-((x-mu)/(2*Sigma))*(x-mu)' );  % removed the constant here
 
 
 %%  draw samples using the likelihood function
@@ -63,34 +56,20 @@ end
 
 log_P_LKH   = zeros(N,N);
 
-
 for j1 = 1:N
-
-
     for j2 = 1:N
-
-
-    log_P_LKH(j1,j2) =   (norm_fun_log(q_model(j2,:), sigma_w,y(j1,:)))';
-
+        log_P_LKH(j1,j2) =   (norm_fun_log(q_model(j2,:), sigma_w,y(j1,:)))';
     end
-
-
 end
 
 
-
-
-log_P_EVD = log(mean(exp(log_P_LKH),2));
+log_P_EVD  = log(mean(exp(log_P_LKH),2));
 
 
 
-%%
-
+%% Calculate the EIG
 
 mu_NMC_j   = diag(log_P_LKH) -log_P_EVD;
-mu_NMC     = mean(mu_NMC_j);
-
-
 
 
 end
