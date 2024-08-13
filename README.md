@@ -1,4 +1,4 @@
-## IMR-based sequential BOED
+# IMR-based sequential BOED
 
 ![overview](overview.png)
 
@@ -12,3 +12,16 @@ In computation, the complete flow states $\mathbf{q}$ include bubble radius, bub
   * Bayesian model selection: Using the marginal likelihood to calibrate the probability of each constitutive model, $\mathcal{M}$.
     
 When the prior is updated using the posterior, one iteration of the sequential design is completed. Soft material properties are shown to be accurately and efficiently characterized by iterating optimal design and model inference processes.
+
+
+## Summary of available constitutive models
+
+| Model $\mathcal{M}$  | Description                | Material properties $\mathbf{\theta}_{\mathcal{M}}$  |
+| ---:                 |     :---:                  |    :---                                              |
+|                      | Newtonian Fluid            | $1/\mathrm{Re}$                                      |
+| NHE                  | Neo-Hookean Elastic        | $1/\mathrm{Ca}$                                      |
+| NHKV                 | Neo-Hookean Kelvin--Voigt  | $1/\mathrm{Re},1/\mathrm{Ca}$                        |
+| SNS                  | Standard Non-Linear Solid  | $1/\mathrm{Re},1/\mathrm{Ca},1/\mathrm{Ca_1}$        |
+| qKV                  | Quadratic Law Kelvin--Voigt| $1/\mathrm{Re}, \alpha,1/\mathrm{Ca}_{\infty}$       |
+| Gen. qKV             | Generalized qKV            | $1/\mathrm{Re},\alpha,1/\mathrm{Ca}_{\infty}$        |
+| Fungnlvis            |                            | $1/\mathrm{Re}, 1/\mathrm{Ca},\lambda_\mu$           |
