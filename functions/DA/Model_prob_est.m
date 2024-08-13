@@ -1,8 +1,6 @@
 function [model_prob_all] = Model_prob_est(Q_model, q_data)
 
-
-% Model probability
-
+% Evaluating model probability
 
 % Inputs:  Q_model   --   All the available models with their posterior distributions
 %          q_data    --   Measurements

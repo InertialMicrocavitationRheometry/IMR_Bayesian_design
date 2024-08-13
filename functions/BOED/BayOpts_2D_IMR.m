@@ -13,9 +13,7 @@ function [x_opt, y_opt] = BayOpts_2D_IMR(Model_all,obs,xrange,N,sigma_w)
 %           y_opt      --  associated optimal EIG
 
 %% Bayesian Optimization for 2D opti problem
-
 clc;
-
 
 [Xfine,Yfine]    =  meshgrid(linspace(xrange(1,1),xrange(1,2)),...
     linspace(xrange(2,1),xrange(2,2)));
@@ -24,24 +22,16 @@ XEI_all          =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
 sd_all           =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
 y_pred_all       =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
 
-
-
 %%  Load exsisting data or initialize with 10 random observations
 
 save_name = 'results_2models.mat';
 
-
 load_data = false;
 
 if load_data
-    
-    %  load data from exisiting evaluations
-
-    load(save_name);
-
-    x = data{1};
+    load(save_name);                                     % load data from exisiting evaluations
+    x      = data{1};
     y_true = data{2};
-
 else
 
     Nstart = 10;                                         % initial samples                         
@@ -55,15 +45,11 @@ else
 
 end
 
-
 %%  Optimization process
-
 
 for j = 0:obs
 
-
     disp(['Design parameters: Rmax = ' num2str(x(end,1)) ', Req = ' num2str(x(end, 2)) ', EIG = ' num2str(y_true(end))])
-
 
     % Gaussian regression
 
@@ -76,13 +62,11 @@ for j = 0:obs
             struct('AcquisitionFunctionName','expected-improvement-plus','Verbose',0));
     end
 
-
     % ardmatern52 kernel was recommended in https://arxiv.org/pdf/1206.2944.pdf
 
     xyfine              =  [Xfine(:), Yfine(:)];
     [y_pred,sd]         =  predict(mdl,xyfine);
     y_pred_all(j+1,:,:) =  reshape(y_pred,size(Xfine));
-
 
     %% Expected Improvement
 
@@ -96,13 +80,10 @@ for j = 0:obs
     XEI_all(j+1,:,:) =  reshape(EI,size(Xfine));
     sd_all(j+1,:,:)  =  reshape(sd,size(Xfine));
 
-
-
 end
 
 [ae,be] = max(y_pred);
 [ao,bo] = max(y_true); str = 'Maximum';
-
 
 fprintf('Bayesian Optimization\n');
 fprintf('  %s (estimated):\n\ty(%.6f,%.6f) = %.6f\n',...
@@ -110,9 +91,8 @@ fprintf('  %s (estimated):\n\ty(%.6f,%.6f) = %.6f\n',...
 fprintf('  %s (observed):\n\ty(%.6f,%.6f) = %.6f\n',...
     str,x(bo,1),x(bo,2),ao);
 
-x_opt = x(bo,:);
-y_opt = y_true(bo);
-
+x_opt   = x(bo,:);
+y_opt   = y_true(bo);
 
 end
 
