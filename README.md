@@ -22,10 +22,16 @@ When the prior is updated using the posterior, one iteration of the sequential d
 | NHE                  | Neo-Hookean Elastic        | $1/\mathrm{Ca}$                                      |
 | NHKV                 | Neo-Hookean Kelvin--Voigt  | $1/\mathrm{Re},1/\mathrm{Ca}$                        |
 | SNS                  | Standard Non-Linear Solid  | $1/\mathrm{Re},1/\mathrm{Ca},1/\mathrm{Ca_1}$        |
-| qKV                  | Quadratic Law Kelvin--Voigt| $1/\mathrm{Re}, \alpha,1/\mathrm{Ca}_{\infty}$       |
+| qKV (fung)           | Quadratic Law Kelvin--Voigt| $1/\mathrm{Re}, \alpha,1/\mathrm{Ca}_{\infty}$       |
 | cKV                  | Cubic Law Kelvin--Voigt    | $1/\mathrm{Re}, \alpha,1/\mathrm{Ca}_{\infty}$       |
 | Gen. qKV             | Generalized qKV            | $1/\mathrm{Re},\alpha,1/\mathrm{Ca}_{\infty}$        |
 | Fungnlvis            | Fung nonlinear viscosity   | $1/\mathrm{Re}, 1/\mathrm{Ca},\lambda_\mu$           |
 | $\vdots$             | $\vdots$                   | $\vdots$                                             |
 
 The current design approach supports all the constitutive models coded in IMR V1.
+
+
+## Implementation
+
+`IMR_design.m` reproduces the design results for the first case considered in the manuscript. 
+
