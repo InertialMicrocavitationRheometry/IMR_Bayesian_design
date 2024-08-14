@@ -12,7 +12,7 @@ function [x_opt, y_opt] = BayOpts_IMR(Model_all,obs,xrange,N,sigma_w)
 %  Output:  x_opt      --  the optimal design
 %           y_opt      --  associated optimal EIG
 
-%% Bayesian Optimization for 2D opti problem
+%% Bayesian Optimization 
 clc;
 
 [Xfine,Yfine]    =  meshgrid(linspace(xrange(1,1),xrange(1,2)),...
