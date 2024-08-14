@@ -28,7 +28,7 @@ When the prior is updated using the posterior, one iteration of the sequential d
 | Fungnlvis            | Fung nonlinear viscosity   | $1/\mathrm{Re}, 1/\mathrm{Ca},\lambda_\mu$           |
 | $\vdots$             | $\vdots$                   | $\vdots$                                             |
 
-The current design approach supports all the constitutive models coded in `IMR_v1`.
+The current design approach supports all the constitutive models released in `IMR_v1`.
 
 
 ## Implementation
