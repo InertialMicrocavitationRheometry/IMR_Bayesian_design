@@ -32,3 +32,13 @@ The current design approach supports all the constitutive models released in `IM
 
 Run `IMR_design.m` to reproduce the design results for the first example case considered in the manuscript. 
 
+* Optimal design:
+    * Given the prior distribution, `IMR_EIG()` evaluates the EIG for a particular design, $\mathbf{d}$.
+    * `BayOpts_IMR()` outputs the optimal design, $\mathbf{d}^*$, using BO.
+* Data assimilation:
+    * `IMR_DA()` performs the En4D-Var process for a given constitutive model and outputs the posterior ensembles.
+* Bayesian model selection:
+    *  `Model_prob_est()` calculates the marginal likelihood of each mathematical model.
+ 
+       
+ 
