@@ -99,10 +99,8 @@ est_params = [];
 
 %%
 
-
 %rng(99)
 tic
-
 
 %% Initialize and import data
 
