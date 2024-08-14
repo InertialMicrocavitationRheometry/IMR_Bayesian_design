@@ -9,7 +9,7 @@ fprintf('Number of workers: %g\n', poolobj.NumWorkers);
 
 %% Set up an underlying model
 
-model_true = 'fung';
+model_true = 'fung';   % Quadratic-law Kelvin--Voight
 theta_true = [2770 0.186 0.48];
 save_name  = 'results_design.mat';
 
@@ -26,7 +26,7 @@ Model_1_prior     =  {'NeoHook', 'G, mu, alpha', P_prior_1, model_prob_1};
 
 P_prior_2.mu      =  [2770 0.286 0.28];
 P_prior_2.sigma   =  ([300 0 0; 0 0.186 0; 0 0 0.48]).^2;
-model_prob_2      =  2;
+model_prob_2      =  0.5;
 Model_2_prior     =  {'fung', 'G_inf, mu, alpha', P_prior_2, model_prob_2};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -124,7 +124,7 @@ while count<30
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     Model_design                     =  {Model_1_prior; Model_2_prior};
-    Model_all{count+1}               = {Model_design; Design_opt; EIG_opt};
+    Model_all{count+1}               =  {Model_design; Design_opt; EIG_opt};
 
     save(save_name,'Model_all','-v7.3')
 
