@@ -30,5 +30,5 @@ The current design approach supports all the constitutive models released in `IM
 
 ## Implementation
 
-`IMR_design.m` reproduces the design results for the first case considered in the manuscript. 
+Run `IMR_design.m` to reproduce the design results for the first example case considered in the manuscript. 
 
