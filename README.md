@@ -32,6 +32,8 @@ The current design approach supports all the constitutive models released in `IM
 
 Run `IMR_design.m` to reproduce the design results for the first example case considered in the manuscript. 
 
+* IMR simulations:
+    * `IMR_simulation()` generates IMR simulations in a parallel environment.
 * Optimal design:
     * Given the prior distribution, `IMR_EIG()` evaluates the EIG for a particular design, $\mathbf{d}$.
     * `BayOpts_IMR()` outputs the optimal design, $\mathbf{d}^*$, using BO.
