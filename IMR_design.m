@@ -44,9 +44,9 @@ while count<30
     xrange       =  [100 1000; 0.14 0.3];     % Optimization range
 
     if count <4
-        [Design_opt, EIG_opt] = BayOpts_2D_IMR(Model_design,obs,xrange,N,[]);
+        [Design_opt, EIG_opt] = BayOpts_IMR(Model_design,obs,xrange,N,[]);
     else
-        [Design_opt, EIG_opt] = BayOpts_2D_IMR(Model_design,obs,xrange,N,sigma_all);
+        [Design_opt, EIG_opt] = BayOpts_IMR(Model_design,obs,xrange,N,sigma_all);
     end
 
    disp(['Design #' num2str(count) ', Optimal design at We = ' num2str(round(Design_opt(1)),'%i') ', Req = ' num2str(Design_opt(2),'%.2f')])

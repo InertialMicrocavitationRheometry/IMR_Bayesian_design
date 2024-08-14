@@ -1,4 +1,4 @@
-function [x_opt, y_opt] = BayOpts_2D_IMR(Model_all,obs,xrange,N,sigma_w)
+function [x_opt, y_opt] = BayOpts_IMR(Model_all,obs,xrange,N,sigma_w)
 
 %  IMR-based Bayesian optimal experimental design (BOED)
 
