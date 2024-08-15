@@ -30,7 +30,7 @@ The current design approach supports all the constitutive models released in `IM
 
 ## Implementation
 
-Run `IMR_design.m` to reproduce the design results for the first example case considered in the manuscript. 
+Run `IMR_design.m` to obtain the design results for the first example case considered in the manuscript. The main functions are:
 
 * Simulations:
     * `IMR_simulation()` generates IMR simulations in a parallel environment.
