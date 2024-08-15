@@ -40,7 +40,7 @@ while count<30
     %%  Bayesian optimization
 
     N            =  1000;                     % EIG sample size
-    obs          =  20;                       % BO evaluation numbers
+    obs          =  15;                       % BO evaluation numbers
     xrange       =  [100 1000; 0.14 0.3];     % Optimization range
 
     if count <4
@@ -64,7 +64,7 @@ while count<30
 
     [t,yth,Uth,dt] = IMR_simulations(theta_true,Design_opt,model_true,80,'auto',save_info);   
      
-    % saving error signatures
+    % save error signatures
     sigma_w           = zeros(1,81);
     for kk = 1:80
         sigma_w(kk+1) = robustcov(yth(:,1+kk));
@@ -81,7 +81,6 @@ while count<30
         Model_j    =  Model_design{j};
         if j == N_model
             % fixed range of quasistatic shear modulus for qKV
-
             Model_j{3}.mu(1)         = 2770;
             Model_j{3}.sigma(1,1)    = 300^2;
         end
@@ -91,9 +90,9 @@ while count<30
 
     %% Model prbability
 
-    Q_model                          = {squeeze(q_model(1,:,:)); squeeze(q_model(2,:,:))};
-    q_data                           = yth(:,(1:size(q_model,3))+1);
-    [model_prob_all(count+1,:)]      = Model_prob_est(Q_model, q_data);
+    Q_model                          =  {squeeze(q_model(1,:,:)); squeeze(q_model(2,:,:))};
+    q_data                           =  yth(:,(1:size(q_model,3))+1);
+    [model_prob_all(count+1,:)]      =  Model_prob_est(Q_model, q_data);
 
     %%  update the Prior
 
