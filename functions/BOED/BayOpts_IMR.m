@@ -15,12 +15,12 @@ function [x_opt, y_opt] = BayOpts_IMR(Model_all,obs,xrange,N,sigma_w)
 %% Bayesian Optimization 
 clc;
 
-[Xfine,Yfine]    =  meshgrid(linspace(xrange(1,1),xrange(1,2)),...
+[Xgrid,Ygrid]    =  meshgrid(linspace(xrange(1,1),xrange(1,2)),...
     linspace(xrange(2,1),xrange(2,2)));
-xyfine           =  [Xfine(:), Yfine(:)];
-XEI_all          =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
-sd_all           =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
-y_pred_all       =  zeros(obs+1,size(Xfine,1),size(Xfine,2));
+XYgrid           =  [Xgrid(:), Ygrid(:)];
+XEI_all          =  zeros(obs+1,size(Xgrid,1),size(Xgrid,2));
+sd_all           =  zeros(obs+1,size(Xgrid,1),size(Xgrid,2));
+y_pred_all       =  zeros(obs+1,size(Xgrid,1),size(Xgrid,2));
 
 %%  Load exsisting data or initialize with 10 random observations
 
@@ -51,7 +51,7 @@ for j = 0:obs
 
     disp(['Design parameters: Rmax = ' num2str(x(end,1)) ', Req = ' num2str(x(end, 2)) ', EIG = ' num2str(y_true(end))])
 
-    % Gaussian regression
+    % Gaussian regression,  ardmatern52 kernel was recommended in https://proceedings.neurips.cc/paper/2012/file/05311655a15b75fab86956663e1819cd-Paper.pdf
 
     if j == 0
         mdl = fitrgp(x,y_true,'Sigma',0.01,'ConstantSigma',true,...
@@ -62,11 +62,9 @@ for j = 0:obs
             struct('AcquisitionFunctionName','expected-improvement-plus','Verbose',0));
     end
 
-    % ardmatern52 kernel was recommended in https://arxiv.org/pdf/1206.2944.pdf
-
-    xyfine              =  [Xfine(:), Yfine(:)];
-    [y_pred,sd]         =  predict(mdl,xyfine);
-    y_pred_all(j+1,:,:) =  reshape(y_pred,size(Xfine));
+    XYgrid              =  [Xgrid(:), Ygrid(:)];
+    [y_pred,sd]         =  predict(mdl,XYgrid);
+    y_pred_all(j+1,:,:) =  reshape(y_pred,size(Xgrid));
 
     %% Expected Improvement
 
@@ -74,11 +72,11 @@ for j = 0:obs
     d                =  y_pred - max(y_true) - xi; 
     EI               =  (sd ~= 0).*(d.*normcdf(d./sd) + sd.*normpdf(d./sd));
     [~,posEI]        =  max(EI); 
-    xEI              =  xyfine(posEI,:);
+    xEI              =  XYgrid(posEI,:);
     x(end+1,:)       =  xEI;               
     [y_true(end+1)]  =  f(x(end,:));   
-    XEI_all(j+1,:,:) =  reshape(EI,size(Xfine));
-    sd_all(j+1,:,:)  =  reshape(sd,size(Xfine));
+    XEI_all(j+1,:,:) =  reshape(EI,size(Xgrid));
+    sd_all(j+1,:,:)  =  reshape(sd,size(Xgrid));
 
 end
 
@@ -87,7 +85,7 @@ end
 
 fprintf('Bayesian Optimization\n');
 fprintf('  %s (estimated):\n\ty(%.6f,%.6f) = %.6f\n',...
-    str,xyfine(be,1),xyfine(be,2),ae);
+    str,xYgrid(be,1),xYgrid(be,2),ae);
 fprintf('  %s (observed):\n\ty(%.6f,%.6f) = %.6f\n',...
     str,x(bo,1),x(bo,2),ao);
 
