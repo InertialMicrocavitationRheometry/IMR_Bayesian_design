@@ -1,8 +1,6 @@
 # IMR-based sequential BOED
 
 
-Reference paper: to be added
-
 ## Overview
 
 ![overview](overview.png)
@@ -48,4 +46,6 @@ Run `IMR_design.m` to obtain the design results for the first example case consi
     *  `Model_prob_est()` calculates the marginal likelihood of each mathematical model.
  
        
- 
+ ## Citation
+
+Relevent paper: to be added.
