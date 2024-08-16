@@ -1,13 +1,15 @@
 # IMR-based sequential BOED
 
+An optimal sequential experimental design approach is developed to characterize soft material properties at the high strain rates associated with bubble cavitation. The Inertial Microcavitation Rheometry (IMR) approach is used to numerically solve the spherically symmetric motion of bubble dynamics. 
+* The current version is based on the main-release repository, `IMR_v1`. For more details, see [here](https://github.com/InertialMicrocavitationRheometry/IMR_v1).
+
 
 ## Overview
 
 ![overview](overview.png)
 
-Given a modeling parameter, $`\mathbf{\theta}=\{\mathcal{M},\, \mathbf{\theta}_{\mathcal{M}}\}`$, which includes a constitutive model and its material properties, and a design $\mathbf{d}$ that describes the experimental setup (e.g., the equilibrium radius), the Inertial Microcavitation Rheometry (IMR) approach numerically solved the spherically symmetric motion of bubble dynamics. 
-* The current version is based on the main-release repository, `IMR_v1`. For more details, see [here](https://github.com/InertialMicrocavitationRheometry/IMR_v1).
-
+The optimal design procedure aims to find an experimental setup (e.g., the equilibrium radius), denoted by $\mathbf{d}$, that can provide the most informative data about unknown material properties. 
+The modeling parameter, $`\mathbf{\theta}=\{\mathcal{M},\, \mathbf{\theta}_{\mathcal{M}}\}`$, includes a constitutive model and its material properties.
 In computation, the complete flow states $\mathbf{q}$ include bubble radius, bubble-wall velocity, temperature, and other variables, but they are only partially observable and are denoted as $\mathbf{y}$. The process for the IMR-based sequential BOED is described as follows:
 * Optimal design: Maximizing the expected information gain (EIG) using Bayesian optimization (BO) to design the most informative cavitation experiments.
 * Model inference:
