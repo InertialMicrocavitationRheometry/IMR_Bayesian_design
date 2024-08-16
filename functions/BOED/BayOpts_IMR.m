@@ -85,7 +85,7 @@ end
 
 fprintf('Bayesian Optimization\n');
 fprintf('  %s (estimated):\n\ty(%.6f,%.6f) = %.6f\n',...
-    str,xYgrid(be,1),xYgrid(be,2),ae);
+    str,XYgrid(be,1),XYgrid(be,2),ae);
 fprintf('  %s (observed):\n\ty(%.6f,%.6f) = %.6f\n',...
     str,x(bo,1),x(bo,2),ao);
 
