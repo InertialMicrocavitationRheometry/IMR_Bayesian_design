@@ -1,5 +1,10 @@
 # IMR-based sequential BOED
 
+
+Reference paper: to be added
+
+## Overview
+
 ![overview](overview.png)
 
 Given a modeling parameter, $`\mathbf{\theta}=\{\mathcal{M},\, \mathbf{\theta}_{\mathcal{M}}\}`$, which includes a constitutive model and its material properties, and a design $\mathbf{d}$ that describes the experimental setup (e.g., the equilibrium radius), the Inertial Microcavitation Rheometry (IMR) approach numerically solved the spherically symmetric motion of bubble dynamics. 
