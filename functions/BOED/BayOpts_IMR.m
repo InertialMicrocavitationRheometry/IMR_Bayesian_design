@@ -10,7 +10,7 @@ function [x_opt, y_opt] = BayOpts_IMR(Model_all,obs,xrange,N,sigma_w)
             f = @(x) IMR_EIG(x, Model_all, N, sigma_w );           % Target function: EIG
 
 %  Output:  x_opt      --  the optimal design
-%           y_opt      --  associated optimal EIG
+%           y_opt      --  the optimal EIG
 
 %% Bayesian Optimization 
 clc;
@@ -29,17 +29,16 @@ save_name = 'results_2models.mat';
 load_data = false;
 
 if load_data
-    load(save_name);                                     % load data from exisiting evaluations
+    load(save_name);                                       % load data from exisiting evaluations
     x      = data{1};
     y_true = data{2};
 else
 
-    Nstart = 10;                                         % initial samples                         
+    Nstart = 10;                                           % initial samples                         
     x = [rand(Nstart,1)*diff(xrange(1,:))+xrange(1,1),...
-        rand(Nstart,1)*diff(xrange(2,:))+xrange(2,1)];   % Random x positions
+        rand(Nstart,1)*diff(xrange(2,:))+xrange(2,1)];     % Random x positions
     y_true = zeros(size(x,1),1);
-
-    for t = 1:size(x,1), y_true(t) = f(x(t,:)); end      % Sample the func at x
+    for t = 1:size(x,1), y_true(t) = f(x(t,:)); end        % Sample the func at x
     data = {x, y_true, y_pred_all,sd_all,XEI_all};
     save(save_name,'data','-v7.3')
 
