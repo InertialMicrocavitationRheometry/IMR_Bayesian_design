@@ -9,7 +9,7 @@ An optimal sequential experimental design approach is developed to characterize 
 ![overview](overview.png)
 
 The optimal design procedure aims to find an experimental setup (e.g., the equilibrium radius), denoted by $\mathbf{d}$, that can provide the most informative data about unknown parameters. 
-In the context of inertial cavitation, the modeling parameter, $`\mathbf{\theta}=\{\mathcal{M},\, \mathbf{\theta}_{\mathcal{M}}\}`$, includes a constitutive model and its material properties.
+In the context of inertial cavitation, the modeling parameter includes a constitutive model and its material properties, denoted as $`\mathbf{\theta}=\{\mathcal{M},\, \mathbf{\theta}_{\mathcal{M}}\}`$.
 In computation, the complete flow states $\mathbf{q}$ include bubble radius, bubble-wall velocity, temperature, and other variables, but they are only partially observable and are denoted as $\mathbf{y}$. The process for the IMR-based sequential BOED is described as follows:
 * Optimal design: Maximizing the expected information gain (EIG) using Bayesian optimization (BO) to design the most informative cavitation experiments.
 * Model inference:
