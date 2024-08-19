@@ -29,17 +29,19 @@ save_name = 'results_2models.mat';
 load_data = false;
 
 if load_data
-    load(save_name);                                             % load data from exisiting evaluations
+    load(save_name);                                       % load data from exisiting evaluations
     x      = data{1};
     y_true = data{2};
 else
-    Nstart = 10;                                                 % initial samples                         
-    x      = [rand(Nstart,1)*diff(xrange(1,:))+xrange(1,1),...
-              rand(Nstart,1)*diff(xrange(2,:))+xrange(2,1)];     % Random x positions
+
+    Nstart = 10;                                           % initial samples                         
+    x = [rand(Nstart,1)*diff(xrange(1,:))+xrange(1,1),...
+        rand(Nstart,1)*diff(xrange(2,:))+xrange(2,1)];     % Random x positions
     y_true = zeros(size(x,1),1);
-    for t = 1:size(x,1), y_true(t) = f(x(t,:)); end              % Evaluate the function for the initial samples
-    data   = {x, y_true, y_pred_all,std_all,XEI_all};
+    for t = 1:size(x,1), y_true(t) = f(x(t,:)); end        % Sample the func at x
+    data = {x, y_true, y_pred_all,std_all,XEI_all};
     save(save_name,'data','-v7.3')
+
 end
 
 %%  Optimization process
