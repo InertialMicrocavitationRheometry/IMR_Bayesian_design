@@ -24,9 +24,8 @@ y_pred_all       =  zeros(obs+1,size(Xgrid,1),size(Xgrid,2));
 
 %%  Load exsisting data or initialize with 10 random observations
 
-save_name = 'results_2models.mat';
-
-load_data = false;
+save_name  = 'results_2models.mat';
+load_data  = false;
 
 if load_data
     load(save_name);                                             % load data from exisiting evaluations
@@ -56,7 +55,7 @@ for j = 0:obs
     else
         mdl = fitrgp(x,y_true,'KernelFunction','ardmatern52',...
             'OptimizeHyperparameters','auto','HyperparameterOptimizationOptions',...
-            struct('AcquisitionFunctionName','expected-improvement-plus','Verbose',0));
+            struct('AcquisitionFunctionName','expected-improvement-plus','Very_true_max_idxse',0));
     end
 
     XYgrid              =  [Xgrid(:), Ygrid(:)];
@@ -68,25 +67,23 @@ for j = 0:obs
     xi                  =  0.01;  % Exploration-exploitation parameter (High xi = more exploration, Low xi = more exploitation)
     deviation           =  y_pred - max(y_true) - xi; 
     EI                  =  (std ~= 0).*(std.*normpdf(deviation./std)+deviation.*normcdf(deviation./std));
-    [~,posEI]           =  max(EI); 
-    x(end+1,:)          =  XYgrid(posEI,:);           
+    [~,EI_idx]          =  max(EI); 
+    x(end+1,:)          =  XYgrid(EI_idx,:);           
     [y_true(end+1)]     =  f(x(end,:));   
     XEI_all(j+1,:,:)    =  reshape(EI,size(Xgrid));
     std_all(j+1,:,:)    =  reshape(std,size(Xgrid));
 
 end
 
-[ae,be] = max(y_pred);
-[ao,bo] = max(y_true); str = 'Maximum';
+[y_pred_max,y_pred_max_idx] = max(y_pred);
+[y_true_max,y_true_max_idx] = max(y_true); 
 
 fprintf('Bayesian Optimization\n');
-fprintf('  %s (estimated):\n\ty(%.6f,%.6f) = %.6f\n',...
-    str,XYgrid(be,1),XYgrid(be,2),ae);
-fprintf('  %s (observed):\n\ty(%.6f,%.6f) = %.6f\n',...
-    str,x(bo,1),x(bo,2),ao);
+fprintf('%s (estimated):\n\ty(%.6f,%.6f) = %.6f\n','Maximum',XYgrid(y_pred_max_idx,1),XYgrid(y_pred_max_idx,2),y_pred_max);
+fprintf('%s (observed):\n\ty(%.6f,%.6f) = %.6f\n', 'Maximum',x(y_true_max_idx,1),x(y_true_max_idx,2),y_true_max);
 
-x_opt   = x(bo,:);
-y_opt   = y_true(bo);
+x_opt   = x(y_true_max_idx,:);
+y_opt   = y_true(y_true_max_idx);
 
 end
 
