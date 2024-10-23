@@ -50,4 +50,4 @@ Run `IMR_design.m` to obtain the design results for the first example case consi
        
  ## Citation
 
-Relevent paper: to be added.
+Relevent paper: Bayesian optimal design accelerates discovery of material properties from bubble dynamics. See [here](https://arXiv:2409.00011).
