@@ -441,7 +441,7 @@ options = odeset('RelTol',1e-5,'AbsTol',1e-8);
         %****************************************************
         
         % Equations of motion
-        rdot = U;
+          rdot = U;
         
         %         if (Tgrad == 0)
         %             P = P0_star*(1/R)^(3*k);
